@@ -23,6 +23,8 @@ interface Env {
   NB_WORKERS_MODEL?: string;
   /** Optional Gemini model override. */
   NB_GEMINI_MODEL?: string;
+    /** Secret used to authenticate remote MCP requests. */
+  MCP_AUTH_TOKEN?: string;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -231,6 +233,27 @@ export default {
     }
 
     if (url.pathname === "/mcp") {
+            // Authenticate MCP requests.
+      const expectedToken = env.MCP_AUTH_TOKEN;
+
+      if (!expectedToken) {
+        return new Response("Server authentication is not configured.", {
+          status: 503,
+          headers: CORS,
+        });
+      }
+
+      const authorization = request.headers.get("Authorization");
+
+      if (authorization !== `Bearer ${expectedToken}`) {
+        return new Response("Unauthorized", {
+          status: 401,
+          headers: {
+            ...CORS,
+            "WWW-Authenticate": "Bearer",
+          },
+        });
+      }
       if (request.method === "DELETE") {
         return new Response(null, { status: 204, headers: CORS }); // stateless: nothing to clean up
       }
