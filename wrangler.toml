@@ -1,4 +1,4 @@
-name = "nb-mcp"
+name = "mcp-image-gen"
 main = "src/index.ts"
 compatibility_date = "2025-11-01"
 
