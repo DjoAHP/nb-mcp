@@ -138,3 +138,5 @@ Cloudflare Worker  (src/index.ts)   ← stateless, hand-rolled MCP transport
 
 - **Transport:** stateless Streamable HTTP (`POST /mcp`, SSE response). No Durable Objects, no Redis.
 - **Runtime deps:** none. Just Wrangler + TypeScript for tooling.
+
+Deployed with Cloudflare Workers.
